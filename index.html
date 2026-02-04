@@ -1,0 +1,1551 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Draconis Community</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* ===== VARIÁVEIS GLOBAIS ===== */
+        :root {
+            /* Cores principais */
+            --primary: #00d9ff;
+            --primary-dark: #00a8cc;
+            --secondary: #9c27b0;
+            --accent: #ff4081;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #F44336;
+            
+            /* Tema escuro */
+            --dark-1: #0a0a0f;
+            --dark-2: #121218;
+            --dark-3: #1a1a23;
+            --dark-4: #22222a;
+            
+            /* Texto */
+            --text-light: #ffffff;
+            --text-gray: #b0b0b0;
+            --text-muted: #888;
+            
+            /* Utilitários */
+            --border-radius: 12px;
+            --border-radius-sm: 8px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+        
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark-1);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* ===== TYPOGRAPHY ===== */
+        h1 { font-size: 3.5rem; font-weight: 800; }
+        h2 { font-size: 2.5rem; font-weight: 700; }
+        h3 { font-size: 1.8rem; font-weight: 600; }
+        h4 { font-size: 1.3rem; font-weight: 500; }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 2rem; }
+            h3 { font-size: 1.5rem; }
+        }
+        
+        /* ===== HEADER ===== */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+        
+        .logo-icon {
+            color: var(--primary);
+            font-size: 2rem;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        /* ===== NAVEGAÇÃO ===== */
+        .nav-desktop {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        @media (max-width: 992px) {
+            .nav-desktop {
+                display: none;
+            }
+        }
+        
+        .nav-link {
+            color: var(--text-gray);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: var(--border-radius-sm);
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary);
+            background: rgba(0, 217, 255, 0.1);
+        }
+        
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 50%;
+        }
+        
+        /* Menu mobile */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        @media (max-width: 992px) {
+            .menu-toggle {
+                display: block;
+            }
+        }
+        
+        .mobile-nav {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            right: 0;
+            background: var(--dark-2);
+            padding: 1rem;
+            display: none;
+            flex-direction: column;
+            gap: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .mobile-nav.active {
+            display: flex;
+        }
+        
+        /* ===== LANGUAGE SELECTOR ===== */
+        .language-selector {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        
+        .lang-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--text-gray);
+            padding: 6px 12px;
+            border-radius: var(--border-radius-sm);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+        
+        .lang-btn:hover, .lang-btn.active {
+            background: var(--primary);
+            color: var(--dark-1);
+            border-color: var(--primary);
+        }
+        
+        /* ===== HERO SECTION ===== */
+        .hero {
+            padding: 120px 0 80px;
+            background: linear-gradient(135deg, var(--dark-1) 0%, var(--dark-2) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 217, 255, 0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .hero h1 {
+            margin-bottom: 1.5rem;
+            background: linear-gradient(90deg, var(--primary), var(--accent), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: gradient 3s ease infinite;
+            background-size: 200% auto;
+        }
+        
+        .hero-description {
+            font-size: 1.2rem;
+            color: var(--text-gray);
+            margin-bottom: 2rem;
+        }
+        
+        /* ===== SECTIONS ===== */
+        section {
+            padding: 80px 0;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .section-title {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+        
+        .section-icon {
+            font-size: 2rem;
+            color: var(--primary);
+        }
+        
+        .section-subtitle {
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* ===== LABORATORY SECTION ===== */
+        .lab-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .lab-release {
+            background: var(--dark-2);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .lab-release:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: var(--shadow);
+        }
+        
+        .release-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1.5rem;
+        }
+        
+        .release-badge {
+            background: var(--secondary);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .release-date {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        
+        .release-media {
+            margin: 1.5rem 0;
+            position: relative;
+            border-radius: var(--border-radius-sm);
+            overflow: hidden;
+        }
+        
+        .release-media img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+        
+        .release-media:hover img {
+            transform: scale(1.05);
+        }
+        
+        .media-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: var(--transition);
+        }
+        
+        .release-media:hover .media-overlay {
+            opacity: 1;
+        }
+        
+        .play-btn {
+            background: var(--primary);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .play-btn:hover {
+            transform: scale(1.1);
+            background: var(--primary-dark);
+        }
+        
+        .download-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 1.5rem 0;
+        }
+        
+        .download-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: rgba(0, 217, 255, 0.1);
+            color: var(--primary);
+            text-decoration: none;
+            border-radius: var(--border-radius-sm);
+            transition: var(--transition);
+            font-weight: 500;
+        }
+        
+        .download-btn:hover {
+            background: var(--primary);
+            color: var(--dark-1);
+        }
+        
+        .lab-stats {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-gray);
+        }
+        
+        .stat i {
+            color: var(--primary);
+        }
+        
+        /* ===== ACADEMY SECTION ===== */
+        .academy-modules {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .module-card {
+            background: var(--dark-2);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .module-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            box-shadow: var(--shadow);
+        }
+        
+        .module-header {
+            padding: 1.5rem;
+            background: rgba(156, 39, 176, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .module-level {
+            display: inline-block;
+            padding: 4px 12px;
+            background: var(--secondary);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .module-lessons {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        
+        .module-content {
+            padding: 1.5rem;
+        }
+        
+        .lesson-list {
+            list-style: none;
+            margin: 1rem 0;
+        }
+        
+        .lesson-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border-radius: var(--border-radius-sm);
+            transition: var(--transition);
+        }
+        
+        .lesson-item:hover {
+            background: rgba(0, 217, 255, 0.05);
+        }
+        
+        .lesson-item i {
+            color: var(--success);
+            font-size: 0.9rem;
+        }
+        
+        .module-actions {
+            padding: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .action-btn {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            background: rgba(0, 217, 255, 0.1);
+            color: var(--primary);
+            text-decoration: none;
+            border-radius: var(--border-radius-sm);
+            transition: var(--transition);
+            font-weight: 500;
+        }
+        
+        .action-btn:hover {
+            background: var(--primary);
+            color: var(--dark-1);
+        }
+        
+        .action-btn.secondary {
+            background: rgba(156, 39, 176, 0.1);
+            color: var(--secondary);
+        }
+        
+        .action-btn.secondary:hover {
+            background: var(--secondary);
+            color: white;
+        }
+        
+        /* ===== COMMUNITY SECTION ===== */
+        .community-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .community-card {
+            text-align: center;
+            padding: 2rem;
+            background: var(--dark-2);
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .community-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: var(--shadow);
+        }
+        
+        .community-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        /* ===== FOOTER ===== */
+        footer {
+            background: var(--dark-2);
+            padding: 4rem 0 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-links a {
+            color: var(--text-gray);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary);
+            padding-left: 5px;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .social-link:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-muted);
+        }
+        
+        /* ===== ANIMATIONS ===== */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        @keyframes gradient {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.6s ease forwards;
+        }
+        
+        /* ===== UTILITY CLASSES ===== */
+        .text-center { text-align: center; }
+        .mb-1 { margin-bottom: 1rem; }
+        .mb-2 { margin-bottom: 2rem; }
+        .mb-3 { margin-bottom: 3rem; }
+        .mt-1 { margin-top: 1rem; }
+        .mt-2 { margin-top: 2rem; }
+        .mt-3 { margin-top: 3rem; }
+        
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            section {
+                padding: 60px 0;
+            }
+            
+            .lab-grid,
+            .academy-modules,
+            .community-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .lab-stats {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .module-actions {
+                flex-direction: column;
+            }
+        }
+        
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--dark-1);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+        
+        /* ===== LOADING ===== */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--dark-1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.3s ease;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(0, 217, 255, 0.3);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: rotate 1s linear infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <a href="#home" class="logo">
+                <i class="fas fa-dragon logo-icon"></i>
+                <span class="logo-text">Draconis</span>
+            </a>
+
+            <!-- Desktop Navigation -->
+            <nav class="nav-desktop">
+                <a href="#home" class="nav-link active" data-translate="nav-home">Início</a>
+                <a href="#laboratory" class="nav-link" data-translate="nav-lab">Laboratório</a>
+                <a href="#academy" class="nav-link" data-translate="nav-academy">Academia</a>
+                <a href="#community" class="nav-link" data-translate="nav-community">Comunidade</a>
+                <a href="#resources" class="nav-link" data-translate="nav-resources">Recursos</a>
+            </nav>
+
+            <!-- Language Selector -->
+            <div class="language-selector">
+                <button class="lang-btn active" data-lang="pt">🇧🇷 PT</button>
+                <button class="lang-btn" data-lang="en">🇺🇸 EN</button>
+                <button class="lang-btn" data-lang="es">🇪🇸 ES</button>
+                <button class="lang-btn" data-lang="jp">🇯🇵 JP</button>
+                <button class="lang-btn" data-lang="fr">🇫🇷 FR</button>
+            </div>
+
+            <!-- Mobile Menu Toggle -->
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Navigation -->
+        <div class="mobile-nav" id="mobileNav">
+            <a href="#home" class="nav-link active" data-translate="nav-home">Início</a>
+            <a href="#laboratory" class="nav-link" data-translate="nav-lab">Laboratório</a>
+            <a href="#academy" class="nav-link" data-translate="nav-academy">Academia</a>
+            <a href="#community" class="nav-link" data-translate="nav-community">Comunidade</a>
+            <a href="#resources" class="nav-link" data-translate="nav-resources">Recursos</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container hero-content">
+            <h1 data-translate="hero-title">Draconis Community</h1>
+            <p class="hero-description" data-translate="hero-description">
+                Conhecimento compartilhado, tecnologia avançada e aprendizado colaborativo.
+                Acesse nossos laboratórios, academia e recursos exclusivos.
+            </p>
+            <div class="mt-3">
+                <a href="#laboratory" class="action-btn" style="padding: 15px 30px; font-size: 1.1rem;" data-translate="hero-cta">
+                    <i class="fas fa-flask"></i> Explorar Laboratório
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Laboratory Section -->
+    <section id="laboratory">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-flask section-icon"></i>
+                    <span data-translate="lab-title">Laboratório Mensal</span>
+                </h2>
+                <p class="section-subtitle" data-translate="lab-subtitle">
+                    Todo mês novos vídeos, downloads, dados, fotos e recursos exclusivos do nosso laboratório.
+                </p>
+            </div>
+
+            <div class="lab-grid">
+                <!-- Release 1 -->
+                <div class="lab-release fade-in">
+                    <div class="release-header">
+                        <span class="release-badge" data-translate="lab-new">NOVO</span>
+                        <span class="release-date">Outubro 2023</span>
+                    </div>
+                    
+                    <h3 data-translate="lab-title-1">Sistema de IA para Automação</h3>
+                    <p data-translate="lab-desc-1">
+                        Demonstração completa do nosso sistema de inteligência artificial para automação industrial.
+                        Inclui código fonte, dataset e documentação.
+                    </p>
+                    
+                    <div class="release-media">
+                        <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Laboratório IA">
+                        <div class="media-overlay">
+                            <a href="#" class="play-btn">
+                                <i class="fas fa-play"></i>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="download-links">
+                        <a href="#" class="download-btn" data-translate="lab-download-video">
+                            <i class="fas fa-video"></i> Vídeo (4K)
+                        </a>
+                        <a href="#" class="download-btn" data-translate="lab-download-code">
+                            <i class="fas fa-code"></i> Código Fonte
+                        </a>
+                        <a href="#" class="download-btn" data-translate="lab-download-data">
+                            <i class="fas fa-database"></i> Dataset
+                        </a>
+                    </div>
+                    
+                    <div class="lab-stats">
+                        <div class="stat">
+                            <i class="fas fa-clock"></i>
+                            <span data-translate="lab-duration">45:22 min</span>
+                        </div>
+                        <div class="stat">
+                            <i class="fas fa-download"></i>
+                            <span data-translate="lab-size">2.4 GB</span>
+                        </div>
+                        <div class="stat">
+                            <i class="fas fa-eye"></i>
+                            <span data-translate="lab-views">1.2K views</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Release 2 -->
+                <div class="lab-release fade-in">
+                    <div class="release-header">
+                        <span class="release-badge" data-translate="lab-update">ATUALIZAÇÃO</span>
+                        <span class="release-date">Setembro 2023</span>
+                    </div>
+                    
+                    <h3 data-translate="lab-title-2">Robótica Avançada</h3>
+                    <p data-translate="lab-desc-2">
+                        Tutorial completo sobre robótica com ROS2. Montagem, programação e simulação de robôs autônomos.
+                    </p>
+                    
+                    <div class="release-media">
+                        <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Robótica">
+                        <div class="media-overlay">
+                            <a href="#" class="play-btn">
+                                <i class="fas fa-play"></i>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="download-links">
+                        <a href="#" class="download-btn" data-translate="lab-download-video">
+                            <i class="fas fa-video"></i> Vídeo (HD)
+                        </a>
+                        <a href="#" class="download-btn" data-translate="lab-download-pdf">
+                            <i class="fas fa-file-pdf"></i> PDF Tutorial
+                        </a>
+                        <a href="#" class="download-btn" data-translate="lab-download-models">
+                            <i class="fas fa-cube"></i> Modelos 3D
+                        </a>
+                    </div>
+                    
+                    <div class="lab-stats">
+                        <div class="stat">
+                            <i class="fas fa-clock"></i>
+                            <span data-translate="lab-duration">1:22:15 min</span>
+                        </div>
+                        <div class="stat">
+                            <i class="fas fa-download"></i>
+                            <span data-translate="lab-size">3.8 GB</span>
+                        </div>
+                        <div class="stat">
+                            <i class="fas fa-eye"></i>
+                            <span data-translate="lab-views">2.1K views</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Academy Section -->
+    <section id="academy" style="background: linear-gradient(135deg, var(--dark-2) 0%, var(--dark-3) 100%);">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-graduation-cap section-icon"></i>
+                    <span data-translate="academy-title">Draconis Academy</span>
+                </h2>
+                <p class="section-subtitle" data-translate="academy-subtitle">
+                    Cursos completos por módulos. Aprenda do básico ao avançado com videoaulas, exercícios e projetos.
+                </p>
+            </div>
+
+            <div class="academy-modules">
+                <!-- Module 1 -->
+                <div class="module-card fade-in">
+                    <div class="module-header">
+                        <span class="module-level" data-translate="academy-beginner">INICIANTE</span>
+                        <h3 data-translate="academy-module-1-title">Programação Python</h3>
+                        <p class="module-lessons" data-translate="academy-module-1-lessons">12 aulas • 8 horas</p>
+                    </div>
+                    
+                    <div class="module-content">
+                        <p data-translate="academy-module-1-desc">
+                            Domine Python desde os fundamentos até programação orientada a objetos.
+                        </p>
+                        
+                        <ul class="lesson-list">
+                            <li class="lesson-item">
+                                <i class="fas fa-play-circle"></i>
+                                <span data-translate="academy-lesson-1">Introdução ao Python</span>
+                            </li>
+                            <li class="lesson-item">
+                                <i class="fas fa-play-circle"></i>
+                                <span data-translate="academy-lesson-2">Estruturas de Dados</span>
+                            </li>
+                            <li class="lesson-item">
+                                <i class="fas fa-play-circle"></i>
+                                <span data-translate="academy-lesson-3">Funções e Módulos</span>
+                            </li>
+                            <li class="lesson-item">
+                                <i class="fas fa-play-circle"></i>
+                                <span data-translate="academy-lesson-4">Programação OO</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="module-actions">
+                        <a href="#" class="action-btn" data-translate="academy-start">
+                            <i class="fas fa-play"></i> Começar
+                        </a>
+                        <a href="#" class="action-btn secondary" data-translate="academy-details">
+                            <i class="fas fa-info-circle"></i> Detalhes
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Module 2 -->
+                <div class="module-card fade-in">
+                    <div class="module-header">
+                        <span class="module-level" data-translate="academy-intermediate">INTERMEDIÁRIO</span>
+                        <h3 data-translate="academy-module-2-title">Machine Learning</h3>
+                        <p class="module-lessons" data-translate="academy-module-2-lessons">18 aulas • 15 horas</p>
+                    </div>
+                    
+                    <div class="module-content">
+                        <p data-translate="academy-module-2-desc">
+                            Aprenda os principais algoritmos de ML e implemente projetos reais.
+                        </p>
+                        
+                        <ul class="lesson-list">
+                            <li class="lesson-item">
+                                <i class="fas fa-play-circle"></i>
+                                <span data-translate="academy-lesson-5">Fundamentos de ML</span>
+                            </li>
+                            <li class="lesson-item">
+                                <i class="fas fa-play-circle"></i>
+                                <span data-translate="academy-lesson-6">Regressão Linear</span>
+                            </li>
+                            <li class="lesson-item">
+                                <i class="fas fa-play-circle"></i>
+                                <span data-translate="academy-lesson-7">Redes Neurais</span>
+                            </li>
+                            <li class="lesson-item">
+                                <i class="fas fa-play-circle"></i>
+                                <span data-translate="academy-lesson-8">Projeto Final</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="module-actions">
+                        <a href="#" class="action-btn" data-translate="academy-start">
+                            <i class="fas fa-play"></i> Começar
+                        </a>
+                        <a href="#" class="action-btn secondary" data-translate="academy-details">
+                            <i class="fas fa-info-circle"></i> Detalhes
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Module 3 -->
+                <div class="module-card fade-in">
+                    <div class="module-header">
+                        <span class="module-level" data-translate="academy-advanced">AVANÇADO</span>
+                        <h3 data-translate="academy-module-3-title">Desenvolvimento Web Full Stack</h3>
+                        <p class="module-lessons" data-translate="academy-module-3-lessons">24 aulas • 20 horas</p>
+                    </div>
+                    
+                    <div class="module-content">
+                        <p data-translate="academy-module-3-desc">
+                            Crie aplicações web completas com frontend e backend.
+                        </p>
+                        
+                        <ul class="lesson-list">
+                            <li class="lesson-item">
+                                <i class="fas fa-play-circle"></i>
+                                <span data-translate="academy-lesson-9">HTML, CSS, JavaScript</span>
+                            </li>
+                            <li class="lesson-item">
+                                <i class="fas fa-play-circle"></i>
+                                <span data-translate="academy-lesson-10">React.js</span>
+                            </li>
+                            <li class="lesson-item">
+                                <i class="fas fa-play-circle"></i>
+                                <span data-translate="academy-lesson-11">Node.js & Express</span>
+                            </li>
+                            <li class="lesson-item">
+                                <i class="fas fa-play-circle"></i>
+                                <span data-translate="academy-lesson-12">Deploy & DevOps</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="module-actions">
+                        <a href="#" class="action-btn" data-translate="academy-start">
+                            <i class="fas fa-play"></i> Começar
+                        </a>
+                        <a href="#" class="action-btn secondary" data-translate="academy-details">
+                            <i class="fas fa-info-circle"></i> Detalhes
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Community Section -->
+    <section id="community">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-users section-icon"></i>
+                    <span data-translate="community-title">Comunidade</span>
+                </h2>
+                <p class="section-subtitle" data-translate="community-subtitle">
+                    Conecte-se com outros aprendizes, compartilhe projetos e colabore.
+                </p>
+            </div>
+
+            <div class="community-grid">
+                <div class="community-card fade-in">
+                    <i class="fab fa-github community-icon"></i>
+                    <h3 data-translate="community-github">GitHub</h3>
+                    <p data-translate="community-github-desc">
+                        Acesse nossos repositórios, contribua com código e acompanhe projetos.
+                    </p>
+                </div>
+
+                <div class="community-card fade-in">
+                    <i class="fab fa-discord community-icon"></i>
+                    <h3 data-translate="community-discord">Discord</h3>
+                    <p data-translate="community-discord-desc">
+                        Participe das discussões, tire dúvidas e colabore em tempo real.
+                    </p>
+                </div>
+
+                <div class="community-card fade-in">
+                    <i class="fab fa-youtube community-icon"></i>
+                    <h3 data-translate="community-youtube">YouTube</h3>
+                    <p data-translate="community-youtube-desc">
+                        Assista às aulas, tutoriais e acompanhe as atualizações do canal.
+                    </p>
+                </div>
+
+                <div class="community-card fade-in">
+                    <i class="fas fa-project-diagram community-icon"></i>
+                    <h3 data-translate="community-projects">Projetos</h3>
+                    <p data-translate="community-projects-desc">
+                        Colabore em projetos open source e desenvolva portfólio.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Resources Section -->
+    <section id="resources" style="background: linear-gradient(135deg, var(--dark-3) 0%, var(--dark-2) 100%);">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-tools section-icon"></i>
+                    <span data-translate="resources-title">Recursos Gratuitos</span>
+                </h2>
+                <p class="section-subtitle" data-translate="resources-subtitle">
+                    Templates, códigos, ferramentas e documentação para acelerar seu aprendizado.
+                </p>
+            </div>
+
+            <div class="lab-grid">
+                <div class="lab-release fade-in">
+                    <h3 data-translate="resources-templates">Templates & Boilerplates</h3>
+                    <p data-translate="resources-templates-desc">
+                        Templates prontos para projetos em Python, JavaScript, React, etc.
+                    </p>
+                    <div class="download-links">
+                        <a href="#" class="download-btn" data-translate="resources-download-web">
+                            <i class="fas fa-globe"></i> Web Template
+                        </a>
+                        <a href="#" class="download-btn" data-translate="resources-download-api">
+                            <i class="fas fa-server"></i> API Template
+                        </a>
+                        <a href="#" class="download-btn" data-translate="resources-download-ml">
+                            <i class="fas fa-brain"></i> ML Template
+                        </a>
+                    </div>
+                </div>
+
+                <div class="lab-release fade-in">
+                    <h3 data-translate="resources-tools">Ferramentas</h3>
+                    <p data-translate="resources-tools-desc">
+                        Scripts e ferramentas úteis para desenvolvimento e automação.
+                    </p>
+                    <div class="download-links">
+                        <a href="#" class="download-btn" data-translate="resources-download-scripts">
+                            <i class="fas fa-code"></i> Scripts Python
+                        </a>
+                        <a href="#" class="download-btn" data-translate="resources-download-docker">
+                            <i class="fab fa-docker"></i> Docker Configs
+                        </a>
+                        <a href="#" class="download-btn" data-translate="resources-download-vscode">
+                            <i class="fas fa-cog"></i> VSCode Configs
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3 data-translate="footer-about">Draconis Community</h3>
+                    <p data-translate="footer-about-desc">
+                        Plataforma de aprendizado e compartilhamento de tecnologia.
+                        Conhecimento livre e acessível para todos.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" class="social-link">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-discord"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h3 data-translate="footer-links">Links Rápidos</h3>
+                    <ul class="footer-links">
+                        <li><a href="#home" data-translate="nav-home">Início</a></li>
+                        <li><a href="#laboratory" data-translate="nav-lab">Laboratório</a></li>
+                        <li><a href="#academy" data-translate="nav-academy">Academia</a></li>
+                        <li><a href="#community" data-translate="nav-community">Comunidade</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3 data-translate="footer-resources">Recursos</h3>
+                    <ul class="footer-links">
+                        <li><a href="#" data-translate="footer-docs">Documentação</a></li>
+                        <li><a href="#" data-translate="footer-tutorials">Tutoriais</a></li>
+                        <li><a href="#" data-translate="footer-projects">Projetos</a></li>
+                        <li><a href="#" data-translate="footer-blog">Blog</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="copyright">
+                <p data-translate="footer-copyright">© 2023 Draconis Community. Conhecimento compartilhado, tecnologia para todos.</p>
+                <p class="mt-1" data-translate="footer-update">Atualizado mensalmente com novos conteúdos.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ===== CONFIGURAÇÃO =====
+        const TRANSLATIONS = {
+            pt: {
+                // Navegação
+                'nav-home': 'Início',
+                'nav-lab': 'Laboratório',
+                'nav-academy': 'Academia',
+                'nav-community': 'Comunidade',
+                'nav-resources': 'Recursos',
+                
+                // Hero
+                'hero-title': 'Draconis Community',
+                'hero-description': 'Conhecimento compartilhado, tecnologia avançada e aprendizado colaborativo. Acesse nossos laboratórios, academia e recursos exclusivos.',
+                'hero-cta': 'Explorar Laboratório',
+                
+                // Laboratório
+                'lab-title': 'Laboratório Mensal',
+                'lab-subtitle': 'Todo mês novos vídeos, downloads, dados, fotos e recursos exclusivos do nosso laboratório.',
+                'lab-new': 'NOVO',
+                'lab-update': 'ATUALIZAÇÃO',
+                'lab-title-1': 'Sistema de IA para Automação',
+                'lab-desc-1': 'Demonstração completa do nosso sistema de inteligência artificial para automação industrial. Inclui código fonte, dataset e documentação.',
+                'lab-title-2': 'Robótica Avançada',
+                'lab-desc-2': 'Tutorial completo sobre robótica com ROS2. Montagem, programação e simulação de robôs autônomos.',
+                'lab-download-video': 'Vídeo (4K)',
+                'lab-download-code': 'Código Fonte',
+                'lab-download-data': 'Dataset',
+                'lab-download-pdf': 'PDF Tutorial',
+                'lab-download-models': 'Modelos 3D',
+                'lab-duration': '45:22 min',
+                'lab-size': '2.4 GB',
+                'lab-views': '1.2K views',
+                
+                // Academia
+                'academy-title': 'Draconis Academy',
+                'academy-subtitle': 'Cursos completos por módulos. Aprenda do básico ao avançado com videoaulas, exercícios e projetos.',
+                'academy-beginner': 'INICIANTE',
+                'academy-intermediate': 'INTERMEDIÁRIO',
+                'academy-advanced': 'AVANÇADO',
+                'academy-module-1-title': 'Programação Python',
+                'academy-module-1-lessons': '12 aulas • 8 horas',
+                'academy-module-1-desc': 'Domine Python desde os fundamentos até programação orientada a objetos.',
+                'academy-module-2-title': 'Machine Learning',
+                'academy-module-2-lessons': '18 aulas • 15 horas',
+                'academy-module-2-desc': 'Aprenda os principais algoritmos de ML e implemente projetos reais.',
+                'academy-module-3-title': 'Desenvolvimento Web Full Stack',
+                'academy-module-3-lessons': '24 aulas • 20 horas',
+                'academy-module-3-desc': 'Crie aplicações web completas com frontend e backend.',
+                'academy-lesson-1': 'Introdução ao Python',
+                'academy-lesson-2': 'Estruturas de Dados',
+                'academy-lesson-3': 'Funções e Módulos',
+                'academy-lesson-4': 'Programação OO',
+                'academy-lesson-5': 'Fundamentos de ML',
+                'academy-lesson-6': 'Regressão Linear',
+                'academy-lesson-7': 'Redes Neurais',
+                'academy-lesson-8': 'Projeto Final',
+                'academy-lesson-9': 'HTML, CSS, JavaScript',
+                'academy-lesson-10': 'React.js',
+                'academy-lesson-11': 'Node.js & Express',
+                'academy-lesson-12': 'Deploy & DevOps',
+                'academy-start': 'Começar',
+                'academy-details': 'Detalhes',
+                
+                // Comunidade
+                'community-title': 'Comunidade',
+                'community-subtitle': 'Conecte-se com outros aprendizes, compartilhe projetos e colabore.',
+                'community-github': 'GitHub',
+                'community-github-desc': 'Acesse nossos repositórios, contribua com código e acompanhe projetos.',
+                'community-discord': 'Discord',
+                'community-discord-desc': 'Participe das discussões, tire dúvidas e colabore em tempo real.',
+                'community-youtube': 'YouTube',
+                'community-youtube-desc': 'Assista às aulas, tutoriais e acompanhe as atualizações do canal.',
+                'community-projects': 'Projetos',
+                'community-projects-desc': 'Colabore em projetos open source e desenvolva portfólio.',
+                
+                // Recursos
+                'resources-title': 'Recursos Gratuitos',
+                'resources-subtitle': 'Templates, códigos, ferramentas e documentação para acelerar seu aprendizado.',
+                'resources-templates': 'Templates & Boilerplates',
+                'resources-templates-desc': 'Templates prontos para projetos em Python, JavaScript, React, etc.',
+                'resources-tools': 'Ferramentas',
+                'resources-tools-desc': 'Scripts e ferramentas úteis para desenvolvimento e automação.',
+                'resources-download-web': 'Web Template',
+                'resources-download-api': 'API Template',
+                'resources-download-ml': 'ML Template',
+                'resources-download-scripts': 'Scripts Python',
+                'resources-download-docker': 'Docker Configs',
+                'resources-download-vscode': 'VSCode Configs',
+                
+                // Footer
+                'footer-about': 'Draconis Community',
+                'footer-about-desc': 'Plataforma de aprendizado e compartilhamento de tecnologia. Conhecimento livre e acessível para todos.',
+                'footer-links': 'Links Rápidos',
+                'footer-resources': 'Recursos',
+                'footer-docs': 'Documentação',
+                'footer-tutorials': 'Tutoriais',
+                'footer-projects': 'Projetos',
+                'footer-blog': 'Blog',
+                'footer-copyright': '© 2023 Draconis Community. Conhecimento compartilhado, tecnologia para todos.',
+                'footer-update': 'Atualizado mensalmente com novos conteúdos.'
+            },
+            
+            en: {
+                'nav-home': 'Home',
+                'nav-lab': 'Laboratory',
+                'nav-academy': 'Academy',
+                'nav-community': 'Community',
+                'nav-resources': 'Resources',
+                'hero-title': 'Draconis Community',
+                'hero-description': 'Shared knowledge, advanced technology and collaborative learning. Access our labs, academy and exclusive resources.',
+                'hero-cta': 'Explore Laboratory'
+            },
+            
+            es: {
+                'nav-home': 'Inicio',
+                'nav-lab': 'Laboratorio',
+                'nav-academy': 'Academia',
+                'nav-community': 'Comunidad',
+                'nav-resources': 'Recursos',
+                'hero-title': 'Comunidad Draconis',
+                'hero-description': 'Conocimiento compartido, tecnología avanzada y aprendizaje colaborativo. Accede a nuestros laboratorios, academia y recursos exclusivos.',
+                'hero-cta': 'Explorar Laboratorio'
+            },
+            
+            jp: {
+                'nav-home': 'ホーム',
+                'nav-lab': '研究室',
+                'nav-academy': 'アカデミー',
+                'nav-community': 'コミュニティ',
+                'nav-resources': 'リソース',
+                'hero-title': 'ドラコニス・コミュニティ',
+                'hero-description': '共有知識、先進技術、協調学習。当社の研究所、アカデミー、独占リソースにアクセスしてください。',
+                'hero-cta': '研究室を探索'
+            },
+            
+            fr: {
+                'nav-home': 'Accueil',
+                'nav-lab': 'Laboratoire',
+                'nav-academy': 'Académie',
+                'nav-community': 'Communauté',
+                'nav-resources': 'Ressources',
+                'hero-title': 'Communauté Draconis',
+                'hero-description': 'Connaissances partagées, technologie avancée et apprentissage collaboratif. Accédez à nos laboratoires, académie et ressources exclusives.',
+                'hero-cta': 'Explorer le Laboratoire'
+            }
+        };
+
+        // ===== INICIALIZAÇÃO =====
+        document.addEventListener('DOMContentLoaded', () => {
+            // Esconde loading
+            setTimeout(() => {
+                document.getElementById('loadingOverlay').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('loadingOverlay').style.display = 'none';
+                }, 300);
+            }, 500);
+            
+            // Inicializa funcionalidades
+            initNavigation();
+            initLanguage();
+            initAnimations();
+            initScrollSpy();
+            
+            // Carrega idioma salvo
+            const savedLang = localStorage.getItem('draconis_lang') || 'pt';
+            changeLanguage(savedLang);
+        });
+
+        // ===== NAVEGAÇÃO =====
+        function initNavigation() {
+            // Menu mobile
+            const menuToggle = document.getElementById('menuToggle');
+            const mobileNav = document.getElementById('mobileNav');
+            
+            menuToggle.addEventListener('click', () => {
+                mobileNav.classList.toggle('active');
+                menuToggle.innerHTML = mobileNav.classList.contains('active')
+                    ? '<i class="fas fa-times"></i>'
+                    : '<i class="fas fa-bars"></i>';
+            });
+            
+            // Fecha menu ao clicar em link
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileNav.classList.remove('active');
+                    menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+                });
+            });
+        }
+
+        // ===== SISTEMA DE IDIOMAS =====
+        function initLanguage() {
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const lang = btn.dataset.lang;
+                    changeLanguage(lang);
+                });
+            });
+        }
+
+        function changeLanguage(lang) {
+            // Atualiza botões
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.lang === lang) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // Atualiza textos
+            const translationsForLang = TRANSLATIONS[lang] || TRANSLATIONS.pt;
+            
+            document.querySelectorAll('[data-translate]').forEach(element => {
+                const key = element.getAttribute('data-translate');
+                if (translationsForLang[key]) {
+                    element.textContent = translationsForLang[key];
+                }
+            });
+            
+            // Salva preferência
+            localStorage.setItem('draconis_lang', lang);
+        }
+
+        // ===== ANIMAÇÕES =====
+        function initAnimations() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -100px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('fade-in');
+                    }
+                });
+            }, observerOptions);
+            
+            // Observa elementos com fade-in
+            document.querySelectorAll('.fade-in').forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        // ===== SCROLL SPY =====
+        function initScrollSpy() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            window.addEventListener('scroll', () => {
+                let current = '';
+                
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    
+                    if (scrollY >= sectionTop - 200) {
+                        current = section.getAttribute('id');
+                    }
+                });
+                
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${current}`) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+        }
+
+        // ===== DOWNLOAD SIMULAÇÃO =====
+        document.querySelectorAll('.download-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Simula download
+                const text = this.textContent;
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Download...';
+                this.style.pointerEvents = 'none';
+                
+                setTimeout(() => {
+                    this.innerHTML = text;
+                    this.style.pointerEvents = 'auto';
+                    
+                    // Notificação simulada
+                    showNotification('Download iniciado!');
+                }, 1500);
+            });
+        });
+
+        // ===== NOTIFICAÇÕES =====
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background: var(--primary);
+                color: var(--dark-1);
+                padding: 12px 20px;
+                border-radius: var(--border-radius-sm);
+                font-weight: 600;
+                z-index: 10000;
+                animation: fadeIn 0.3s ease;
+                box-shadow: var(--shadow);
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // ===== MANIPULAÇÃO DE DATAS =====
+        function formatDate(date) {
+            return new Date(date).toLocaleDateString('pt-BR', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
+        }
+
+        // Exemplo: atualiza datas dinamicamente
+        document.querySelectorAll('.release-date').forEach(el => {
+            const currentDate = new Date();
+            const month = currentDate.toLocaleString('pt-BR', { month: 'long' });
+            const year = currentDate.getFullYear();
+            el.textContent = `${month.charAt(0).toUpperCase() + month.slice(1)} ${year}`;
+        });
+    </script>
+</body>
+</html>
